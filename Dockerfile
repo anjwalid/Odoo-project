@@ -85,11 +85,11 @@ COPY ./odoo.conf /etc/odoo/
 # Ensure the entrypoint.sh script is executable
 RUN chmod +x /entrypoint.sh
 
+# Create the necessary directories if not already present
+RUN mkdir -p /mnt/extra-addons
+
 # Set permissions for configuration and add-ons directories
 RUN chown -R odoo:odoo /etc/odoo /mnt/extra-addons /entrypoint.sh
-
-# Create the necessary directories
-RUN mkdir -p /mnt/extra-addons && chown -R odoo:odoo /mnt/extra-addons
 
 # Expose Odoo services
 EXPOSE 8069 8071 8072
