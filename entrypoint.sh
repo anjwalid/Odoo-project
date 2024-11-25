@@ -14,10 +14,10 @@ function check_config() {
     DB_ARGS+=("${value}")
 }
 
-check_config "db_host" "c9mq4861d16jlm.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com"
+check_config "db_host" "cb5ajfjosdpmil.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com"
 check_config "db_port" "5432"
-check_config "db_user" "uem41k4fff5jm7"
-check_config "db_password" "p4e88aa0c057d2b552198db015ef39d1678187af361a3f8fd748041544fe23c0c"
+check_config "db_user" "u6898p6uci08ut"
+check_config "db_password" "pb7b7e6c8208469e4ae55db44c2d291a641a9a7b7ac15dd5cd293c8de50872fa1"
 
 case "$1" in
     -- | odoo)
