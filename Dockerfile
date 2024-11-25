@@ -10,7 +10,6 @@ ENV LANG en_US.UTF-8
 ARG TARGETARCH
 
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
-
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends \
@@ -80,14 +79,17 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
     && rm -rf /var/lib/apt/lists/* odoo.deb
 
 # Copy entrypoint script and Odoo configuration file
-COPY ./entrypoint.sh /
+COPY ./entrypoint.sh /entrypoint.sh
 COPY ./odoo.conf /etc/odoo/
 
-# Set permissions and Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
-RUN chown odoo /etc/odoo/odoo.conf \
-    && mkdir -p /mnt/extra-addons \
-    && chown -R odoo /mnt/extra-addons
-VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
+# Ensure the entrypoint.sh script is executable
+RUN chmod +x /entrypoint.sh
+
+# Set permissions for configuration and add-ons directories
+RUN chown -R odoo:odoo /etc/odoo /mnt/extra-addons /entrypoint.sh
+
+# Create the necessary directories
+RUN mkdir -p /mnt/extra-addons && chown -R odoo:odoo /mnt/extra-addons
 
 # Expose Odoo services
 EXPOSE 8069 8071 8072
@@ -95,10 +97,15 @@ EXPOSE 8069 8071 8072
 # Set the default config file
 ENV ODOO_RC /etc/odoo/odoo.conf
 
+# Copy the wait-for-psql script
 COPY wait-for-psql.py /usr/local/bin/wait-for-psql.py
+
+# Ensure the wait-for-psql.py script is executable
+RUN chmod +x /usr/local/bin/wait-for-psql.py
 
 # Set default user when running the container
 USER odoo
 
+# Entry point and command
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["odoo"]
