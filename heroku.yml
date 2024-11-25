@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: docker/16.0/Dockerfile
+run:
+  web: odoo --config=/etc/odoo/odoo.conf
