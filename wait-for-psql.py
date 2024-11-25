@@ -11,6 +11,7 @@ if __name__ == '__main__':
     arg_parser.add_argument('--db_port', required=True)
     arg_parser.add_argument('--db_user', required=True)
     arg_parser.add_argument('--db_password', required=True)
+    arg_parser.add_argument('--db_name', required=True)  # Ajout du paramètre db_name
     arg_parser.add_argument('--timeout', type=int, default=5)
 
     args = arg_parser.parse_args()
@@ -23,7 +24,7 @@ if __name__ == '__main__':
                 host=args.db_host,
                 port=args.db_port,
                 password=args.db_password,
-                dbname='postgres')
+                dbname=args.db_name)  # Utilisation du nom de la base de données
             error = ''
             break
         except psycopg2.OperationalError as e:
@@ -35,3 +36,5 @@ if __name__ == '__main__':
     if error:
         print("Database connection failure: %s" % error, file=sys.stderr)
         sys.exit(1)
+
+    print("Connection to the database was successful.")
