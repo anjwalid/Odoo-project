@@ -1,4 +1,4 @@
 build:
   docker:
-    web: Dockerfileheroku stack:set container --app odoo1-project
+    web: Dockerfile
 
